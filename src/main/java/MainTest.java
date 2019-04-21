@@ -1,6 +1,7 @@
 import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -15,7 +16,7 @@ import javafx.util.Duration;
 
 
 public class MainTest extends Application {
-    private Scene sceneBegin, sceneMenu, sceneEncrypt,sceneDecrypt;
+    private Scene sceneBegin, sceneMenu, sceneManifest, sceneEncrypt, sceneDecrypt;
     private Stage primaryStage;
     private static final Color colorA = Color.AQUA;
     private static final Color colorAB = Color.AQUAMARINE;
@@ -26,16 +27,17 @@ public class MainTest extends Application {
     private final Content contentMenu = Content.create("menu");
     private final Content contentEncrypt = Content.create("encrypt");
     private final Content contentDecrypt = Content.create("decrypt");
+    private final Content contentManifest = Content.create("manifest");
 
     private static class Content {
         private final Group group = new Group();
         private Label labelTop, labelGround;
         private VBox vBox = new VBox();
         private Label labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit;
-        private Label labelMenu,labelSelectOne, labelSelectMultiple;
+        private Label labelMenu, labelSelectOne, labelFileEncrypt, labelFileDecrypt;
         private String shortInfo;
         private Text text = new Text();
-        private TextArea fileArea;
+        private TextArea fileArea = new TextArea();
         private Animation animation;
 
         private static Content create(String page) {
@@ -80,27 +82,39 @@ public class MainTest extends Application {
                 labelQuit = CreateButton("qut");
                 vBox.getChildren().addAll(labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit);
 
-            } else if (pageName.equals("encrypt")){
+            } else if (pageName.equals("encrypt")) {
                 labelTop = createSeparator(1);
                 labelGround = createSeparator(320);
 
                 vBox.setLayoutY(30);
-                vBox.setSpacing(30);
 
                 labelMenu = CreateButton("menu");
-                labelSelectOne = CreateButton("selOne");
-                labelSelectMultiple = CreateButton("selMul");
+                labelSelectOne = CreateButton("selOneE");
+                labelFileEncrypt = CreateButton("fenc");
 
-                fileArea = new TextArea();
-                fileArea.minHeight(70);
-                vBox.getChildren().addAll(labelMenu,fileArea,labelSelectOne,labelSelectMultiple);
+                fileArea.setPrefHeight(10);
+
+                vBox.getChildren().addAll(labelMenu, fileArea, labelSelectOne, labelFileEncrypt);
 
 
-            } else if (pageName.equals("decrypt")){
+            } else if (pageName.equals("decrypt")) {
+                labelTop = createSeparator(1);
+                labelGround = createSeparator(320);
+
+                vBox.setLayoutY(30);
+
+                labelMenu = CreateButton("menu");
+                labelSelectOne = CreateButton("selOneD");
+                labelFileDecrypt = CreateButton("fdenc");
+
+                fileArea.setPrefHeight(10);
+
+                vBox.getChildren().addAll(labelMenu, fileArea, labelSelectOne, labelFileDecrypt);
+            } else if (pageName.equals("manifest")) {
                 labelTop = createSeparator(1);
                 labelGround = createSeparator(320);
                 vBox.setLayoutY(30);
-                vBox.setSpacing(30);
+
                 labelMenu = CreateButton("menu");
                 vBox.getChildren().add(labelMenu);
             }
@@ -119,10 +133,10 @@ public class MainTest extends Application {
             button.setTextFill(colorA);
             switch (buttonName) {
                 case "enc":
-                    button.setText("[0] Encrypt file(s)");
+                    button.setText("[0] Encryption");
                     break;
                 case "dec":
-                    button.setText("[1] Decrypt file(s)");
+                    button.setText("[1] Decryption");
                     break;
                 case "man":
                     button.setText("[2] Manifest");
@@ -136,11 +150,16 @@ public class MainTest extends Application {
                 case "menu":
                     button.setText("[0] To Menu");
                     break;
-                case "selOne":
-                    button.setText("[1] Select one file");
+                case "selOneE":
+                    button.setText("[1] Select one file to encrypt");
                     break;
-                case  "selMul":
-                    button.setText("[2] Select multiple files");
+                case "selOneD":
+                    button.setText("[1] Select one file to decrypt");
+                case "fenc":
+                    button.setText("[2] Encrypt file");
+                    break;
+                case "fdenc":
+                    button.setText("[2] Decrypt file");
             }
             return button;
         }
@@ -196,14 +215,30 @@ public class MainTest extends Application {
 
 
     private void handle(String sceneName) {
-        if (sceneName.equals("begin")) {
-            primaryStage.setScene(sceneMenu);
-        } else if (sceneName.equals("menu")) {
-            menuMouseActions(contentMenu.labelEncrypt);
-            menuMouseActions(contentMenu.labelDecrypt);
-            menuMouseActions(contentMenu.labelManifest);
-            menuMouseActions(contentMenu.labelGitHub);
-            menuMouseActions(contentMenu.labelQuit);
+        switch (sceneName) {
+            case "begin":
+                primaryStage.setScene(sceneMenu);
+                break;
+            case "menu":
+                menuMouseActions(contentMenu.labelEncrypt);
+                menuMouseActions(contentMenu.labelDecrypt);
+                menuMouseActions(contentMenu.labelManifest);
+                menuMouseActions(contentMenu.labelGitHub);
+                menuMouseActions(contentMenu.labelQuit);
+                break;
+            case "encry":
+                menuMouseActions(contentEncrypt.labelMenu);
+                menuMouseActions(contentEncrypt.labelSelectOne);
+                menuMouseActions(contentEncrypt.labelFileEncrypt);
+                break;
+            case "decry":
+                menuMouseActions(contentDecrypt.labelMenu);
+                menuMouseActions(contentDecrypt.labelSelectOne);
+                menuMouseActions(contentDecrypt.labelFileDecrypt);
+                break;
+            case "manst":
+                menuMouseActions(contentManifest.labelMenu);
+                break;
         }
     }
 
@@ -211,12 +246,30 @@ public class MainTest extends Application {
         menuLabel.setOnMouseEntered(event -> menuLabel.setTextFill(colorAB));
         menuLabel.setOnMouseExited(event -> menuLabel.setTextFill(colorA));
         String menuLabelText = menuLabel.getText();
-        if (menuLabelText.equals("[3] Github page")) {
-            menuLabel.setOnMouseClicked(event -> openBrowser());
-        } else if (menuLabelText.equals("[0] Encrypt file(s)")){
+        if (menuLabelText.equals("[0] Encryption")) {
             menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneEncrypt));
-        } else if (menuLabelText.equals("[1] Decrypt file(s)")) {
+        } else if (menuLabelText.equals("[1] Decryption")) {
             menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneDecrypt));
+        } else if (menuLabelText.equals("[3] Github page")) {
+            menuLabel.setOnMouseClicked(event -> openBrowser());
+        } else if (menuLabelText.equals("[2] Manifest")) {
+            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneManifest));
+        } else if (menuLabelText.equals("[4] Quit")) {
+            menuLabel.setOnMouseClicked(event -> Platform.exit());
+        } else if (menuLabelText.equals("[0] To Menu")) {
+            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneMenu));
+        } else if (menuLabelText.equals("[[1] Select one file to encrypt")) {
+            menuLabel.setOnMouseClicked(event -> contentEncrypt.fileArea.clear());
+            //TODO open dialog window
+        } else if (menuLabelText.equals("[1] Select one file to decrypt")){
+            menuLabel.setOnMouseClicked(event -> contentDecrypt.fileArea.clear());
+            //TODO open dialog window
+        } else if (menuLabelText.equals("[2] Encrypt file")) {
+            //TODO encryption event
+            System.out.println("encrypt file");
+        } else if (menuLabelText.equals("[2] Decrypt file")) {
+            //TODO decryption event
+            System.out.println("decrption file");
         } else {
             menuLabel.setOnMouseClicked(event -> System.out.println(menuLabel.getText()));
         }
@@ -242,9 +295,17 @@ public class MainTest extends Application {
         sceneMenu.setOnMouseEntered(event -> handle("menu"));
 
         sceneEncrypt = createScene(contentEncrypt.group);
+        sceneEncrypt.setOnKeyPressed(event -> handle(event, "encry"));
+        sceneEncrypt.setOnMouseEntered(event -> handle("encry"));
 
-        sceneEncrypt = createScene(contentDecrypt.group);
-        //primaryStage.setScene(sceneMenu);
+        sceneDecrypt = createScene(contentDecrypt.group);
+        sceneDecrypt.setOnKeyPressed(event -> handle(event, "decry"));
+        sceneDecrypt.setOnMouseEntered(event -> handle("decry"));
+
+        sceneManifest = createScene(contentManifest.group);
+        sceneManifest.setOnKeyPressed(event -> handle(event, "manst"));
+        sceneManifest.setOnMouseEntered(event -> handle("manst"));
+
 
         (this.primaryStage = primaryStage).show();
 
