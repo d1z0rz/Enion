@@ -50,7 +50,7 @@ public class FilterFileChooserDemo extends Application {
         fileChooser.setTitle("Select Pictures");
 
         // Set Initial Directory
-        fileChooser.setInitialDirectory(new File("C:/Users/tran/Pictures"));
+        //fileChooser.setInitialDirectory(new File("C:/Users/tran/Pictures"));
 
         // Add Extension Filters
         fileChooser.getExtensionFilters().addAll(//

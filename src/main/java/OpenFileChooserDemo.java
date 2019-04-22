@@ -31,17 +31,13 @@ public class OpenFileChooserDemo extends Application {
 
         Button buttonM = new Button("Select Multi Files");
 
-        button1.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                textArea.clear();
-                File file = fileChooser.showOpenDialog(primaryStage);
-                if (file != null) {
-                    openFile(file);
-                    List<File> files = Arrays.asList(file);
-                    printLog(textArea, files);
-                }
+        button1.setOnAction(event -> {
+            textArea.clear();
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                openFile(file);
+                List<File> files = Arrays.asList(file);
+                printLog(textArea, files);
             }
         });
 

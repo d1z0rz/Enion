@@ -1,3 +1,8 @@
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -6,15 +11,9 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-
 public class Crypto {
 
-    static void fileProcessor(int cipherMode,String key,File inputFile,File outputFile){
+    static void fileProcessor(int cipherMode, String key, File inputFile, File outputFile) {
         try {
             Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance("AES");
@@ -39,6 +38,26 @@ public class Crypto {
         }
     }
 
+    public void encryption(File inputFile, File encryptedFile, String key) {
+        try {
+            fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
+            System.out.println("File encrypted");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    public void decryption(File inputFile, File decryptedFile, String  key){
+        try {
+            fileProcessor(Cipher.DECRYPT_MODE, key, inputFile, decryptedFile);
+            System.out.println("File decrypted");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         String key = "This is a secret";
         File inputFile = new File("test.txt");
@@ -46,8 +65,8 @@ public class Crypto {
         File decryptedFile = new File("decrypted-text.txt");
 
         try {
-            Crypto.fileProcessor(Cipher.ENCRYPT_MODE,key,inputFile,encryptedFile);
-            Crypto.fileProcessor(Cipher.DECRYPT_MODE,key,encryptedFile,decryptedFile);
+            Crypto.fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
+            Crypto.fileProcessor(Cipher.DECRYPT_MODE, key, encryptedFile, decryptedFile);
             System.out.println("Sucess");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

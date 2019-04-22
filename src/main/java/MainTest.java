@@ -2,6 +2,7 @@ import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,178 +12,32 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
+
 
 public class MainTest extends Application {
-    private Scene sceneBegin, sceneMenu, sceneManifest, sceneEncrypt, sceneDecrypt;
-    private Stage primaryStage;
     private static final Color colorA = Color.AQUA;
     private static final Color colorAB = Color.AQUAMARINE;
     private static final Color colorW = Color.WHITE;
     private static final Color colorScene = Color.BLACK;
-
     private final Content contentBegin = Content.create("begin");
     private final Content contentMenu = Content.create("menu");
     private final Content contentEncrypt = Content.create("encrypt");
     private final Content contentDecrypt = Content.create("decrypt");
     private final Content contentManifest = Content.create("manifest");
+    private Scene sceneBegin, sceneMenu, sceneManifest, sceneEncrypt, sceneDecrypt;
+    private Stage primaryStage;
 
-    private static class Content {
-        private final Group group = new Group();
-        private Label labelTop, labelGround;
-        private VBox vBox = new VBox();
-        private Label labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit;
-        private Label labelMenu, labelSelectOne, labelFileEncrypt, labelFileDecrypt;
-        private String shortInfo;
-        private Text text = new Text();
-        private TextArea fileArea = new TextArea();
-        private Animation animation;
+    private FileChooser fileChooser = new FileChooser();
+    private File file;
 
-        private static Content create(String page) {
-            Content content = new Content(page);
-            content.group.getChildren().addAll(content.labelTop, content.labelGround, content.vBox, content.text);
-            return content;
-        }
-
-
-        private Content(String pageName) {
-            if (pageName.equals("begin")) {
-                labelTop = createSeparator(1);
-                labelGround = createSeparator(320);
-                vBox.setLayoutY(20);
-
-                shortInfo = getBeginInfo();
-                text.setFill(colorA);
-                text.setY(60);
-                text.setX(160);
-                animation = new Transition() {
-                    {
-                        setCycleDuration(Duration.millis(4000));
-                    }
-
-                    protected void interpolate(double frac) {
-                        int length = shortInfo.length();
-                        int n = Math.round(length * (float) frac);
-                        text.setText(shortInfo.substring(0, n));
-                    }
-                };
-                animation.play();
-
-            } else if (pageName.equals("menu")) {
-                labelTop = createSeparator(1);
-                labelGround = createSeparator(320);
-                vBox.setLayoutY(50);
-
-                labelEncrypt = CreateButton("enc");
-                labelDecrypt = CreateButton("dec");
-                labelManifest = CreateButton("man");
-                labelGitHub = CreateButton("git");
-                labelQuit = CreateButton("qut");
-                vBox.getChildren().addAll(labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit);
-
-            } else if (pageName.equals("encrypt")) {
-                labelTop = createSeparator(1);
-                labelGround = createSeparator(320);
-
-                vBox.setLayoutY(30);
-
-                labelMenu = CreateButton("menu");
-                labelSelectOne = CreateButton("selOneE");
-                labelFileEncrypt = CreateButton("fenc");
-
-                fileArea.setPrefHeight(10);
-
-                vBox.getChildren().addAll(labelMenu, fileArea, labelSelectOne, labelFileEncrypt);
-
-
-            } else if (pageName.equals("decrypt")) {
-                labelTop = createSeparator(1);
-                labelGround = createSeparator(320);
-
-                vBox.setLayoutY(30);
-
-                labelMenu = CreateButton("menu");
-                labelSelectOne = CreateButton("selOneD");
-                labelFileDecrypt = CreateButton("fdenc");
-
-                fileArea.setPrefHeight(10);
-
-                vBox.getChildren().addAll(labelMenu, fileArea, labelSelectOne, labelFileDecrypt);
-            } else if (pageName.equals("manifest")) {
-                labelTop = createSeparator(1);
-                labelGround = createSeparator(320);
-                vBox.setLayoutY(30);
-
-                labelMenu = CreateButton("menu");
-                vBox.getChildren().add(labelMenu);
-            }
-        }
-
-        private Label createSeparator(double Y) {
-            Label separator = new Label(
-                    "============================================================================\n");
-            separator.setTextFill(colorA);
-            separator.setLayoutY(Y);
-            return separator;
-        }
-
-        private Label CreateButton(String buttonName) {
-            Label button = new Label();
-            button.setTextFill(colorA);
-            switch (buttonName) {
-                case "enc":
-                    button.setText("[0] Encryption");
-                    break;
-                case "dec":
-                    button.setText("[1] Decryption");
-                    break;
-                case "man":
-                    button.setText("[2] Manifest");
-                    break;
-                case "git":
-                    button.setText("[3] Github page");
-                    break;
-                case "qut":
-                    button.setText("[4] Quit");
-                    break;
-                case "menu":
-                    button.setText("[0] To Menu");
-                    break;
-                case "selOneE":
-                    button.setText("[1] Select one file to encrypt");
-                    break;
-                case "selOneD":
-                    button.setText("[1] Select one file to decrypt");
-                case "fenc":
-                    button.setText("[2] Encrypt file");
-                    break;
-                case "fdenc":
-                    button.setText("[2] Decrypt file");
-            }
-            return button;
-        }
-
-        private String getBeginInfo() {
-            String logo = "  _____        __          _    _____        ____            __           _  \n" +
-                    " / ___/        /   \\        / )  (_   _)      / ___ \\          /  \\          / ) \n" +
-                    "( (__         / /\\  \\      / /      | |       / /     \\ \\        / /\\ \\       / /  \n" +
-                    " ) __)       ) )  ) )    ) )       | |      ( ()    () )     ) )  ) )     ) )  \n" +
-                    "( (          ( (    ( (   ( (       | |      ( ()    () )    ( (    ( (   ( (   \n" +
-                    " \\ \\___    / /      \\ \\ / /       _| |__    \\ \\___/ /     / /      \\ \\ / /   \n" +
-                    "  \\____\\ (_/        \\__/      /_____(     \\____/     (_/        \\__/    " + "\n";
-
-            String info =
-                    "    |====== Made by D1z0R and dfjoppe =====|" + "\n" +
-                            "    |======               Version 1.0               =====|" + "\n" +
-                            "    |======   Awesome Encrypting tool   =====|" + "\n" +
-                            "    |======    Have fun and Stay Legal    =====|" + "\n" +
-                            "    |======    User Welcome to ENION    =====|" + "\n" +
-                            "    |======      Press SPACE to begin      =====|";
-            return logo + info;
-        }
-
+    public static void main(String[] args) {
+        launch(args);
     }
 
     private Scene createScene(Group group) {
@@ -246,33 +101,132 @@ public class MainTest extends Application {
         menuLabel.setOnMouseEntered(event -> menuLabel.setTextFill(colorAB));
         menuLabel.setOnMouseExited(event -> menuLabel.setTextFill(colorA));
         String menuLabelText = menuLabel.getText();
-        if (menuLabelText.equals("[0] Encryption")) {
-            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneEncrypt));
-        } else if (menuLabelText.equals("[1] Decryption")) {
-            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneDecrypt));
-        } else if (menuLabelText.equals("[3] Github page")) {
-            menuLabel.setOnMouseClicked(event -> openBrowser());
-        } else if (menuLabelText.equals("[2] Manifest")) {
-            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneManifest));
-        } else if (menuLabelText.equals("[4] Quit")) {
-            menuLabel.setOnMouseClicked(event -> Platform.exit());
-        } else if (menuLabelText.equals("[0] To Menu")) {
-            menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneMenu));
-        } else if (menuLabelText.equals("[[1] Select one file to encrypt")) {
-            menuLabel.setOnMouseClicked(event -> contentEncrypt.fileArea.clear());
-            //TODO open dialog window
-        } else if (menuLabelText.equals("[1] Select one file to decrypt")){
-            menuLabel.setOnMouseClicked(event -> contentDecrypt.fileArea.clear());
-            //TODO open dialog window
-        } else if (menuLabelText.equals("[2] Encrypt file")) {
-            //TODO encryption event
-            System.out.println("encrypt file");
-        } else if (menuLabelText.equals("[2] Decrypt file")) {
-            //TODO decryption event
-            System.out.println("decrption file");
-        } else {
-            menuLabel.setOnMouseClicked(event -> System.out.println(menuLabel.getText()));
+        switch (menuLabelText) {
+            case "[0] Encryption":
+                menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneEncrypt));
+                break;
+            case "[1] Decryption":
+                menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneDecrypt));
+                break;
+            case "[3] Github page":
+                menuLabel.setOnMouseClicked(event -> openBrowser());
+                break;
+            case "[2] Manifest":
+                menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneManifest));
+                break;
+            case "[4] Quit":
+                menuLabel.setOnMouseClicked(event -> Platform.exit());
+                break;
+            case "[0] To Menu":
+                menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneMenu));
+                break;
+            case "[1] Select one file to encrypt":
+                menuLabel.setOnMouseClicked(event -> {
+                    contentEncrypt.filePathString.setText("File path");
+                    configurationEncryptFileChooser(fileChooser);
+                    file = fileChooser.showOpenDialog(primaryStage);
+                    printLog(contentEncrypt.filePathString, file);
+                });
+                break;
+            case "[1] Select one file to decrypt":
+                menuLabel.setOnMouseClicked(event -> {
+                    contentDecrypt.filePathString.setText("File path");
+                    configutationDecryptFileChooser(fileChooser);
+                    file = fileChooser.showOpenDialog(primaryStage);
+                    printLog(contentEncrypt.filePathString, file);
+                });
+                break;
+            case "[2] Encrypt file":
+                menuLabel.setOnMouseClicked(event -> {
+                    System.out.println(file.getPath());
+                    String keyPass = windowAskKey("encrypt");
+                });
+                //TODO key ask window and encryption event
+                break;
+            case "[2] Decrypt file":
+                menuLabel.setOnMouseClicked(event -> System.out.println("deccc"));
+                //TODO key ask window and decryption event
+                break;
+            default:
+                menuLabel.setOnMouseClicked(event -> System.out.println(menuLabel.getText()));
+                break;
         }
+    }
+
+    private void configurationEncryptFileChooser(FileChooser fileChooser) {
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Files", "*.*"),
+                new FileChooser.ExtensionFilter("png", "*.png")
+        );
+    }
+
+    private void configutationDecryptFileChooser(FileChooser fileChooser) {
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Encrypted", "*.secured"));
+    }
+
+    private String windowAskKey(String action){
+        Stage keyStage;
+        Scene keyScene;
+        VBox keyVbox;
+        Label labelInfo, labelKeyEnter,labelCorrect;
+        String stringUnchecedKey,stringCorrectKey;
+
+        keyStage = new Stage();
+        keyStage.setTitle("Enion");
+
+        keyStage.setResizable(false);
+
+        keyVbox = new VBox();
+        keyVbox.setAlignment(Pos.CENTER);
+
+        labelInfo = new Label("Write password: ");
+        labelCorrect = new Label("");
+        labelCorrect.setTextFill(colorScene);
+        labelInfo.setTextFill(colorScene);
+        TextArea inputKey = new TextArea("");
+        labelKeyEnter = new Label();
+        labelKeyEnter.setTextFill(colorScene);
+
+        if (action.equals("encrypt")) {
+            labelKeyEnter.setText("[0] Encrypt file");
+        } else if (action.equals("decrypt")) {
+            labelKeyEnter.setText("[0] Decrypt file");
+        }
+
+        keyVbox.getChildren().addAll(labelInfo,labelCorrect,inputKey,labelKeyEnter);
+        keyScene = new Scene(keyVbox,200, 100);
+
+        keyStage.setScene(keyScene);
+        keyStage.show();
+
+        stringUnchecedKey = new String("");
+        stringUnchecedKey = inputKey.toString();
+
+        String finalStringUnchecedKey = stringUnchecedKey;
+
+        labelKeyEnter.setOnMouseClicked(event -> {
+            System.out.println(finalStringUnchecedKey.toString());
+        });
+        labelKeyEnter.setOnMouseEntered(event -> labelKeyEnter.setTextFill(Color.GRAY));
+        labelKeyEnter.setOnMouseExited(event -> labelKeyEnter.setTextFill(Color.BLACK));
+        System.out.println(finalStringUnchecedKey);
+        return finalStringUnchecedKey;
+    }
+
+    private boolean passwordCheck(String key){
+        if (key != null && !key.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void printLog(Text textPath, File file) {
+        if (file == null) {
+            return;
+        }
+        textPath.setText("File path: "+file.getAbsolutePath() + "\n");
     }
 
     private void openBrowser() {
@@ -311,9 +265,168 @@ public class MainTest extends Application {
 
     }
 
+    private static class Content {
+        private final Group group = new Group();
+        private Label labelTop, labelGround;
+        private VBox vBox = new VBox();
+        private Label labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit;
+        private Label labelMenu, labelSelectOne, labelFileEncrypt, labelFileDecrypt;
+        private String shortInfo;
+        private Text text = new Text();
+        private Text filePathString = createFilePathString();
+        private Animation animation;
 
-    public static void main(String[] args) {
-        launch(args);
+        private Text createFilePathString() {
+            Text filePath = new Text("File path:");
+            filePath.setFill(colorW);
+            return filePath;
+        }
+
+
+        private Content(String pageName) {
+            switch (pageName) {
+                case "begin":
+                    labelTop = createSeparator(1);
+                    labelGround = createSeparator(320);
+                    vBox.setLayoutY(20);
+
+                    shortInfo = getBeginInfo();
+                    text.setFill(colorA);
+                    text.setY(60);
+                    text.setX(160);
+                    animation = new Transition() {
+                        {
+                            setCycleDuration(Duration.millis(4000));
+                        }
+
+                        protected void interpolate(double frac) {
+                            int length = shortInfo.length();
+                            int n = Math.round(length * (float) frac);
+                            text.setText(shortInfo.substring(0, n));
+                        }
+                    };
+                    animation.play();
+
+                    break;
+                case "menu":
+                    labelTop = createSeparator(1);
+                    labelGround = createSeparator(320);
+                    vBox.setLayoutY(50);
+
+                    labelEncrypt = CreateButton("enc");
+                    labelDecrypt = CreateButton("dec");
+                    labelManifest = CreateButton("man");
+                    labelGitHub = CreateButton("git");
+                    labelQuit = CreateButton("qut");
+                    vBox.getChildren().addAll(labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit);
+
+                    break;
+                case "encrypt":
+                    labelTop = createSeparator(1);
+                    labelGround = createSeparator(320);
+
+                    vBox.setLayoutY(30);
+                    vBox.setMinWidth(350);
+
+                    labelMenu = CreateButton("menu");
+                    labelSelectOne = CreateButton("selOneE");
+                    labelFileEncrypt = CreateButton("fenc");
+
+                    vBox.getChildren().addAll(labelMenu, filePathString, labelSelectOne, labelFileEncrypt);
+
+                    break;
+                case "decrypt":
+                    labelTop = createSeparator(1);
+                    labelGround = createSeparator(320);
+
+                    vBox.setLayoutY(30);
+
+                    labelMenu = CreateButton("menu");
+                    labelSelectOne = CreateButton("selOneD");
+                    labelFileDecrypt = CreateButton("fdenc");
+
+                    vBox.getChildren().addAll(labelMenu, filePathString, labelSelectOne, labelFileDecrypt);
+                    break;
+                case "manifest":
+                    labelTop = createSeparator(1);
+                    labelGround = createSeparator(320);
+                    vBox.setLayoutY(30);
+
+                    labelMenu = CreateButton("menu");
+                    vBox.getChildren().add(labelMenu);
+                    break;
+            }
+        }
+
+        private static Content create(String page) {
+            Content content = new Content(page);
+            content.group.getChildren().addAll(content.labelTop, content.labelGround, content.vBox, content.text);
+            return content;
+        }
+
+        private Label createSeparator(double Y) {
+            Label separator = new Label(
+                    "============================================================================\n");
+            separator.setTextFill(colorA);
+            separator.setLayoutY(Y);
+            return separator;
+        }
+
+        private Label CreateButton(String buttonName) {
+            Label button = new Label();
+            button.setTextFill(colorA);
+            switch (buttonName) {
+                case "enc":
+                    button.setText("[0] Encryption");
+                    break;
+                case "dec":
+                    button.setText("[1] Decryption");
+                    break;
+                case "man":
+                    button.setText("[2] Manifest");
+                    break;
+                case "git":
+                    button.setText("[3] Github page");
+                    break;
+                case "qut":
+                    button.setText("[4] Quit");
+                    break;
+                case "menu":
+                    button.setText("[0] To Menu");
+                    break;
+                case "selOneE":
+                    button.setText("[1] Select one file to encrypt");
+                    break;
+                case "selOneD":
+                    button.setText("[1] Select one file to decrypt");
+                    break;
+                case "fenc":
+                    button.setText("[2] Encrypt file");
+                    break;
+                case "fdenc":
+                    button.setText("[2] Decrypt file");
+                    break;
+            }
+            return button;
+        }
+
+        private String getBeginInfo() {
+            String logo = "  _____        __          _    _____        ____            __           _  \n" +
+                    " / ___/        /   \\        / )  (_   _)      / ___ \\          /  \\          / ) \n" +
+                    "( (__         / /\\  \\      / /      | |       / /     \\ \\        / /\\ \\       / /  \n" +
+                    " ) __)       ) )  ) )    ) )       | |      ( ()    () )     ) )  ) )     ) )  \n" +
+                    "( (          ( (    ( (   ( (       | |      ( ()    () )    ( (    ( (   ( (   \n" +
+                    " \\ \\___    / /      \\ \\ / /       _| |__    \\ \\___/ /     / /      \\ \\ / /   \n" +
+                    "  \\____\\ (_/        \\__/      /_____(     \\____/     (_/        \\__/    " + "\n";
+
+            String info =
+                    "    |====== Made by D1z0R and dfjoppe =====|" + "\n" +
+                            "    |======               Version 1.0               =====|" + "\n" +
+                            "    |======   Awesome Encrypting tool   =====|" + "\n" +
+                            "    |======    Have fun and Stay Legal    =====|" + "\n" +
+                            "    |======    User Welcome to ENION    =====|" + "\n" +
+                            "    |======      Press SPACE to begin      =====|";
+            return logo + info;
+        }
     }
-
 }
