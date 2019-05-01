@@ -53,18 +53,46 @@ public class MainTest extends Application {
                 primaryStage.setScene(sceneMenu);
             }
         } else if (sceneName.equals("menu")) {
-            //TODO ADD TO ALL LABELS ALL ACTIONS
             KeyCode key = event.getCode();
             if (key == KeyCode.DIGIT0) {
                 primaryStage.setScene(sceneEncrypt);
             } else if (key == KeyCode.DIGIT1) {
                 primaryStage.setScene(sceneDecrypt);
             } else if (key == KeyCode.DIGIT2) {
-                System.out.println("2");
+                primaryStage.setScene(sceneManifest);
             } else if (key == KeyCode.DIGIT3) {
                 openBrowser();
             } else if (key == KeyCode.DIGIT4) {
-                System.out.println("4");
+                primaryStage.close();
+            }
+        } else if (sceneName.equals("encry")) {
+            KeyCode key = event.getCode();
+            if (key == KeyCode.DIGIT0) {
+                primaryStage.setScene(sceneMenu);
+            } else if (key == KeyCode.DIGIT1) {
+                contentEncrypt.filePathString.setText("File path");
+                configurationEncryptFileChooser(fileChooser);
+                file = fileChooser.showOpenDialog(primaryStage);
+                printLog(contentEncrypt.filePathString, file);
+            } else if (key == KeyCode.DIGIT2) {
+                windowAskPassword("encrypt", file);
+            }
+        } else if (sceneName.equals("decry")) {
+            KeyCode key = event.getCode();
+            if (key == KeyCode.DIGIT0) {
+                primaryStage.setScene(sceneMenu);
+            } else if (key == KeyCode.DIGIT1) {
+                contentDecrypt.filePathString.setText("File path");
+                configutationDecryptFileChooser(fileChooser);
+                file = fileChooser.showOpenDialog(primaryStage);
+                printLog(contentDecrypt.filePathString, file);
+            } else if (key == KeyCode.DIGIT2) {
+                windowAskPassword("decrypt", file);
+            }
+        } else if (sceneName.equals("manst")) {
+            KeyCode key = event.getCode();
+            if (key == KeyCode.DIGIT0) {
+                primaryStage.setScene(sceneMenu);
             }
         }
     }
@@ -220,9 +248,7 @@ public class MainTest extends Application {
                             labelError.setText("Correct password");
                             stagePassword.close();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeyException e) {
+                    } catch (IOException | InvalidKeyException e) {
                         e.printStackTrace();
                     }
                 } else if (!(password.getText().getBytes().length <= 1 || password.getText().getBytes().length >= 16)) {
