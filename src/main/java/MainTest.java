@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -32,7 +33,10 @@ public class MainTest extends Application {
     private final Content contentEncrypt = Content.create("encrypt");
     private final Content contentDecrypt = Content.create("decrypt");
     private final Content contentManifest = Content.create("manifest");
-    private Scene sceneBegin, sceneMenu, sceneManifest, sceneEncrypt, sceneDecrypt;
+    private Scene sceneMenu;
+    private Scene sceneManifest;
+    private Scene sceneEncrypt;
+    private Scene sceneDecrypt;
     private Stage primaryStage;
 
     private FileChooser fileChooser = new FileChooser();
@@ -42,8 +46,8 @@ public class MainTest extends Application {
         launch(args);
     }
 
-    private Scene createScene(Group group) {
-        Scene scene = new Scene(group);
+    private Scene createScene(BorderPane borderPane) {
+        Scene scene = new Scene(borderPane);
         scene.setFill(colorScene);
         return scene;
     }
@@ -63,6 +67,7 @@ public class MainTest extends Application {
                     primaryStage.setScene(sceneDecrypt);
                 } else if (key == KeyCode.DIGIT2) {
                     primaryStage.setScene(sceneManifest);
+                    contentManifest.animation.play();
                 } else if (key == KeyCode.DIGIT3) {
                     openBrowser();
                 } else if (key == KeyCode.DIGIT4) {
@@ -152,7 +157,10 @@ public class MainTest extends Application {
                 menuLabel.setOnMouseClicked(event -> openBrowser());
                 break;
             case "[2] Manifest":
-                menuLabel.setOnMouseClicked(event -> primaryStage.setScene(sceneManifest));
+                menuLabel.setOnMouseClicked(event -> {
+                    primaryStage.setScene(sceneManifest);
+                    contentManifest.animation.play();
+                });
                 break;
             case "[4] Quit":
                 menuLabel.setOnMouseClicked(event -> Platform.exit());
@@ -291,24 +299,24 @@ public class MainTest extends Application {
         primaryStage.setHeight(360);
 
 
-        sceneBegin = createScene(contentBegin.group);
+        Scene sceneBegin = createScene(contentBegin.borderPane);
         sceneBegin.setOnKeyPressed(event -> handle(event, "begin"));
         sceneBegin.setOnMouseClicked(event -> handle("begin"));
         primaryStage.setScene(sceneBegin);
 
-        sceneMenu = createScene(contentMenu.group);
+        sceneMenu = createScene(contentMenu.borderPane);
         sceneMenu.setOnKeyPressed(event -> handle(event, "menu"));
         sceneMenu.setOnMouseEntered(event -> handle("menu"));
 
-        sceneEncrypt = createScene(contentEncrypt.group);
+        sceneEncrypt = createScene(contentEncrypt.borderPane);
         sceneEncrypt.setOnKeyPressed(event -> handle(event, "encry"));
         sceneEncrypt.setOnMouseEntered(event -> handle("encry"));
 
-        sceneDecrypt = createScene(contentDecrypt.group);
+        sceneDecrypt = createScene(contentDecrypt.borderPane);
         sceneDecrypt.setOnKeyPressed(event -> handle(event, "decry"));
         sceneDecrypt.setOnMouseEntered(event -> handle("decry"));
 
-        sceneManifest = createScene(contentManifest.group);
+        sceneManifest = createScene(contentManifest.borderPane);
         sceneManifest.setOnKeyPressed(event -> handle(event, "manst"));
         sceneManifest.setOnMouseEntered(event -> handle("manst"));
 
@@ -318,7 +326,7 @@ public class MainTest extends Application {
     }
 
     private static class Content {
-        private final Group group = new Group();
+        private final BorderPane borderPane = new BorderPane();
         private Label labelTop, labelGround;
         private VBox vBox = new VBox();
         private Label labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit;
@@ -411,7 +419,7 @@ public class MainTest extends Application {
                     text.setX(160);
                     animation = new Transition() {
                         {
-                            setCycleDuration(Duration.millis(4000));
+                            setCycleDuration(Duration.millis(5000));
                         }
 
                         protected void interpolate(double frac) {
@@ -420,14 +428,25 @@ public class MainTest extends Application {
                         }
                     };
                     vBox.getChildren().add(labelMenu);
-                    animation.play();
+                    //animation.play();
                     break;
             }
         }
 
         private static Content create(String page) {
             Content content = new Content(page);
-            content.group.getChildren().addAll(content.labelTop, content.labelGround, content.vBox, content.text);
+            BorderPane.setAlignment(content.labelTop, Pos.TOP_CENTER);
+            BorderPane.setAlignment(content.vBox,Pos.CENTER_LEFT);
+            BorderPane.setAlignment(content.text,Pos.CENTER);
+            BorderPane.setAlignment(content.labelGround,Pos.BOTTOM_CENTER);
+
+            content.borderPane.setTop(content.labelTop);
+            content.borderPane.setLeft(content.vBox);
+            content.borderPane.setCenter(content.text);
+            content.borderPane.setBottom(content.labelGround);
+            content.borderPane.setPrefSize(640,340);
+            content.borderPane.setStyle("-fx-background-color: #282B5E;");
+
             return content;
         }
 
@@ -497,9 +516,13 @@ public class MainTest extends Application {
         }
 
         private String getManifestInfo() {
-            //TODO manifest information
-            String manifestInfo = "JUST FOR TEST";
-            return manifestInfo;
+            return "Manifest V1.0" + "\n" +
+            "Code Base: our imagination and practice" + "\n" +
+            "Created by D1z0R && sjeppiroe" + "\n" +
+            "Permissions: everything, that you can imagine" + "\n"+
+            "Algorithm: AES256" + "\n" +
+            "Security level: 1" + "\n" +
+            "Your CPU cannot guarantee true random";
         }
     }
 }
