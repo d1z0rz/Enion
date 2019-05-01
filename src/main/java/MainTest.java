@@ -10,8 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -19,7 +18,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-
+import java.io.IOException;
+import java.security.InvalidKeyException;
 
 public class MainTest extends Application {
     private static final Color colorA = Color.AQUA;
@@ -134,20 +134,18 @@ public class MainTest extends Application {
                     contentDecrypt.filePathString.setText("File path");
                     configutationDecryptFileChooser(fileChooser);
                     file = fileChooser.showOpenDialog(primaryStage);
-                    printLog(contentEncrypt.filePathString, file);
+                    printLog(contentDecrypt.filePathString, file);
                 });
                 break;
             case "[2] Encrypt file":
                 menuLabel.setOnMouseClicked(event -> {
-                    //System.out.println(file.getPath());
-                    windowAskPassword("encrypt");
-                    //System.out.println(keyPass);
+                    windowAskPassword("encrypt", file);
                 });
-                //TODO key ask window and encryption event
                 break;
             case "[2] Decrypt file":
-                menuLabel.setOnMouseClicked(event -> System.out.println("deccc"));
-                //TODO key ask window and decryption event
+                menuLabel.setOnMouseClicked(event -> {
+                    windowAskPassword("decrypt", file);
+                });
                 break;
             default:
                 menuLabel.setOnMouseClicked(event -> System.out.println(menuLabel.getText()));
@@ -167,7 +165,7 @@ public class MainTest extends Application {
                 new FileChooser.ExtensionFilter("Encrypted", "*.secured"));
     }
 
-    private void windowAskPassword(String action) {
+    private void windowAskPassword(String action, File choosenFile) {
         Stage stagePassword = new Stage();
         Group groupPassword = new Group();
         Scene scene = new Scene(groupPassword, 260, 80);
@@ -190,26 +188,45 @@ public class MainTest extends Application {
         final PasswordField password = new PasswordField();
         if (action == "encrypt") {
             password.setOnAction(e -> {
-                if (password.getText().length() >= 6) {
+                if ((password.getText().getBytes()).length == 16) {
                     labelError.setText("Password is ok");
                     labelError.setTextFill(Color.web("black"));
-                    System.out.println(password.getText());
+                    try {
+                        Crypto.actionWithFile(choosenFile, "encryption", password.getText());
+                        System.out.println("success");
+                        stagePassword.close();
+                    } catch (IOException | InvalidKeyException ex) {
+                        ex.printStackTrace();
+                    }
                 } else if (password.getText().length() >= 1 && password.getText().length() < 6) {
-                    labelError.setText("Password should contain minimum 6 chars");
+                    labelError.setText("Password contain 16-bits");
                     labelError.setTextFill(Color.web("red"));
                 } else {
                     labelError.setText("Write your password");
                     labelError.setTextFill(Color.web("red"));
                 }
             });
-        } else  if (action == "decrypt") {
+        } else if (action == "decrypt") {
             password.setOnAction(event -> {
-                if (password.getText().length() >= 6) {
-                    labelError.setText("Correct password");
+                if ((password.getText().getBytes()).length == 16) {
+                    labelError.setText("Checking password");
                     labelError.setTextFill(Color.web("black"));
                     System.out.println(password.getText());
-                } else if (password.getText().length() >= 1 && password.getText().length() < 6) {
-                    labelError.setText("Password should contain minimum 6 chars");
+                    try {
+                        Crypto.actionWithFile(choosenFile, "decryption", password.getText());
+                        if (PasswordError.passwordState == 1) {
+                            labelError.setText("Wrong password");
+                        } else if (PasswordError.passwordState == 0) {
+                            labelError.setText("Correct password");
+                            stagePassword.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeyException e) {
+                        e.printStackTrace();
+                    }
+                } else if (!(password.getText().getBytes().length <= 1 || password.getText().getBytes().length >= 16)) {
+                    labelError.setText("Password contain 16-bits");
                     labelError.setTextFill(Color.web("red"));
                 } else {
                     labelError.setText("Write your password");
@@ -218,20 +235,11 @@ public class MainTest extends Application {
             });
         }
 
-        System.out.println(password);
         hBox.getChildren().addAll(labelPassword, password);
         vBox.getChildren().addAll(hBox, labelError);
 
         scene.setRoot(vBox);
         stagePassword.show();
-    }
-
-    private boolean passwordCheck(String key) {
-        if (key != null && !key.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void printLog(Text textPath, File file) {
@@ -250,6 +258,7 @@ public class MainTest extends Application {
         primaryStage.setTitle("Enion");
         primaryStage.setWidth(640);
         primaryStage.setHeight(360);
+
 
         sceneBegin = createScene(contentBegin.group);
         sceneBegin.setOnKeyPressed(event -> handle(event, "begin"));
@@ -455,6 +464,7 @@ public class MainTest extends Application {
                             "    |======      Press SPACE to begin      =====|";
             return logo + info;
         }
+
         private String getManifestInfo() {
             //TODO manifest information
             String manifestInfo = "JUST FOR TEST";

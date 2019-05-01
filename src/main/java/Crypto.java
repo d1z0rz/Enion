@@ -12,8 +12,10 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 public class Crypto {
+    //all operation with file ecnryption/decryption
 
     static void fileProcessor(int cipherMode, String key, File inputFile, File outputFile) {
+        //main encrpytion/decrypton process
         try {
             Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
             Cipher cipher = Cipher.getInstance("AES");
@@ -30,50 +32,72 @@ public class Crypto {
 
             inputStream.close();
             outputStream.close();
+            PasswordError.passwordState = 0;
 
         } catch (NoSuchPaddingException | NoSuchAlgorithmException
                 | InvalidKeyException | BadPaddingException
                 | IllegalBlockSizeException | IOException e) {
-            e.printStackTrace();
+            System.out.println("Exeption Wrong Password");
+            PasswordError.passwordState = 1;
         }
     }
 
-    public static void encryption(File inputFile, File encryptedFile, String key) {
-        try {
-            fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
-            System.out.println("File encrypted");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+    private static void encryption(File inputFile, File encryptedFile, String key) {
+        //save encrypted file
+        fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
+        System.out.println("File encrypted");
     }
 
-    public static void decryption(File inputFile, File decryptedFile, String  key){
-        try {
-            fileProcessor(Cipher.DECRYPT_MODE, key, inputFile, decryptedFile);
-            System.out.println("File decrypted");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+    private static void decryption(File inputFile, File decryptedFile, String key) {
+        //save decrypted file
+        fileProcessor(Cipher.DECRYPT_MODE, key, inputFile, decryptedFile);
+        System.out.println("File decrypted");
+    }
+
+    private static String stripExtension(String str) {
+        //function, that handle the path and strip file extention
+        if (str == null) return null;
+        int pos = str.lastIndexOf(".");
+        if (pos == -1) return str;
+        return str.substring(0, pos);
+    }
+
+    public static void actionWithFile(File inputFile, String action, String password) throws IOException, InvalidKeyException {
+        //actions with income file
+        String FilePath, FilePathFormatted;
+        File encryptedFile, decryptedFile;
+        if (action.equals("encryption")) {
+            FilePath = inputFile.getAbsolutePath();
+            FilePathFormatted = FilePath + ".secured";
+            encryptedFile = new File(FilePathFormatted);
+            System.out.println(encryptedFile.getPath());
+            System.out.println(inputFile.getAbsolutePath());
+            Crypto.encryption(inputFile, encryptedFile, password);
+        } else if (action.equals("decryption")) {
+            FilePath = inputFile.getAbsolutePath();
+            FilePathFormatted = stripExtension(FilePath);
+            decryptedFile = new File(FilePathFormatted);
+            Crypto.decryption(inputFile, decryptedFile, password);
         }
     }
 
     public static void main(String[] args) {
         String key = "This is a secret";
-        String falseKey = "Not a secret";
-        File inputFile = new File("test.txt");
-        File encryptedFile = new File("text.encrypted");
+        String falseKey = "S0baka";
+        String shaKey = String.valueOf(falseKey.hashCode());
+        File inputFile = new File("/Users/k01/Downloads/Safenet-Luna-Network-HSM7.png");
+        File encryptedFile = new File("test.txt.secured");
         File decryptedFile = new File("decrypted-text.txt");
+        File encFile = new File("test.txt.secured");
 
         try {
-            //Crypto.encryption(inputFile,encryptedFile,key);
-            Crypto.decryption(encryptedFile,decryptedFile,falseKey);
-            //Crypto.fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
-            //Crypto.fileProcessor(Cipher.DECRYPT_MODE, key, encryptedFile, decryptedFile);
+            //Crypto.actionWithFile(inputFile,"encryption",key);
+            Crypto.actionWithFile(encryptedFile, "decryption", key);
             System.out.println("Sucess");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
