@@ -38,7 +38,7 @@ public class Crypto {
         }
     }
 
-    public void encryption(File inputFile, File encryptedFile, String key) {
+    public static void encryption(File inputFile, File encryptedFile, String key) {
         try {
             fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
             System.out.println("File encrypted");
@@ -48,7 +48,7 @@ public class Crypto {
         }
     }
 
-    public void decryption(File inputFile, File decryptedFile, String  key){
+    public static void decryption(File inputFile, File decryptedFile, String  key){
         try {
             fileProcessor(Cipher.DECRYPT_MODE, key, inputFile, decryptedFile);
             System.out.println("File decrypted");
@@ -60,13 +60,16 @@ public class Crypto {
 
     public static void main(String[] args) {
         String key = "This is a secret";
+        String falseKey = "Not a secret";
         File inputFile = new File("test.txt");
         File encryptedFile = new File("text.encrypted");
         File decryptedFile = new File("decrypted-text.txt");
 
         try {
-            Crypto.fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
-            Crypto.fileProcessor(Cipher.DECRYPT_MODE, key, encryptedFile, decryptedFile);
+            //Crypto.encryption(inputFile,encryptedFile,key);
+            Crypto.decryption(encryptedFile,decryptedFile,falseKey);
+            //Crypto.fileProcessor(Cipher.ENCRYPT_MODE, key, inputFile, encryptedFile);
+            //Crypto.fileProcessor(Cipher.DECRYPT_MODE, key, encryptedFile, decryptedFile);
             System.out.println("Sucess");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

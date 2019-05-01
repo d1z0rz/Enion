@@ -2,13 +2,15 @@ import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -17,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class MainTest extends Application {
@@ -138,8 +139,9 @@ public class MainTest extends Application {
                 break;
             case "[2] Encrypt file":
                 menuLabel.setOnMouseClicked(event -> {
-                    System.out.println(file.getPath());
-                    String keyPass = windowAskKey("encrypt");
+                    //System.out.println(file.getPath());
+                    windowAskPassword("encrypt");
+                    //System.out.println(keyPass);
                 });
                 //TODO key ask window and encryption event
                 break;
@@ -165,56 +167,66 @@ public class MainTest extends Application {
                 new FileChooser.ExtensionFilter("Encrypted", "*.secured"));
     }
 
-    private String windowAskKey(String action){
-        Stage keyStage;
-        Scene keyScene;
-        VBox keyVbox;
-        Label labelInfo, labelKeyEnter,labelCorrect;
-        String stringUnchecedKey,stringCorrectKey;
+    private void windowAskPassword(String action) {
+        Stage stagePassword = new Stage();
+        Group groupPassword = new Group();
+        Scene scene = new Scene(groupPassword, 260, 80);
+        stagePassword.setScene(scene);
 
-        keyStage = new Stage();
-        keyStage.setTitle("Enion");
+        stagePassword.setTitle("Enion Password");
 
-        keyStage.setResizable(false);
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10, 0, 0, 10));
+        vBox.setSpacing(10);
+        vBox.setAlignment(Pos.CENTER);
 
-        keyVbox = new VBox();
-        keyVbox.setAlignment(Pos.CENTER);
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
 
-        labelInfo = new Label("Write password: ");
-        labelCorrect = new Label("");
-        labelCorrect.setTextFill(colorScene);
-        labelInfo.setTextFill(colorScene);
-        TextArea inputKey = new TextArea("");
-        labelKeyEnter = new Label();
-        labelKeyEnter.setTextFill(colorScene);
+        Label labelPassword = new Label("Password");
 
-        if (action.equals("encrypt")) {
-            labelKeyEnter.setText("[0] Encrypt file");
-        } else if (action.equals("decrypt")) {
-            labelKeyEnter.setText("[0] Decrypt file");
+        Label labelError = new Label("");
+
+        final PasswordField password = new PasswordField();
+        if (action == "encrypt") {
+            password.setOnAction(e -> {
+                if (password.getText().length() >= 6) {
+                    labelError.setText("Password is ok");
+                    labelError.setTextFill(Color.web("black"));
+                    System.out.println(password.getText());
+                } else if (password.getText().length() >= 1 && password.getText().length() < 6) {
+                    labelError.setText("Password should contain minimum 6 chars");
+                    labelError.setTextFill(Color.web("red"));
+                } else {
+                    labelError.setText("Write your password");
+                    labelError.setTextFill(Color.web("red"));
+                }
+            });
+        } else  if (action == "decrypt") {
+            password.setOnAction(event -> {
+                if (password.getText().length() >= 6) {
+                    labelError.setText("Correct password");
+                    labelError.setTextFill(Color.web("black"));
+                    System.out.println(password.getText());
+                } else if (password.getText().length() >= 1 && password.getText().length() < 6) {
+                    labelError.setText("Password should contain minimum 6 chars");
+                    labelError.setTextFill(Color.web("red"));
+                } else {
+                    labelError.setText("Write your password");
+                    labelError.setTextFill(Color.web("red"));
+                }
+            });
         }
 
-        keyVbox.getChildren().addAll(labelInfo,labelCorrect,inputKey,labelKeyEnter);
-        keyScene = new Scene(keyVbox,200, 100);
+        System.out.println(password);
+        hBox.getChildren().addAll(labelPassword, password);
+        vBox.getChildren().addAll(hBox, labelError);
 
-        keyStage.setScene(keyScene);
-        keyStage.show();
-
-        stringUnchecedKey = new String("");
-        stringUnchecedKey = inputKey.toString();
-
-        String finalStringUnchecedKey = stringUnchecedKey;
-
-        labelKeyEnter.setOnMouseClicked(event -> {
-            System.out.println(finalStringUnchecedKey.toString());
-        });
-        labelKeyEnter.setOnMouseEntered(event -> labelKeyEnter.setTextFill(Color.GRAY));
-        labelKeyEnter.setOnMouseExited(event -> labelKeyEnter.setTextFill(Color.BLACK));
-        System.out.println(finalStringUnchecedKey);
-        return finalStringUnchecedKey;
+        scene.setRoot(vBox);
+        stagePassword.show();
     }
 
-    private boolean passwordCheck(String key){
+    private boolean passwordCheck(String key) {
         if (key != null && !key.isEmpty()) {
             return true;
         } else {
@@ -226,7 +238,7 @@ public class MainTest extends Application {
         if (file == null) {
             return;
         }
-        textPath.setText("File path: "+file.getAbsolutePath() + "\n");
+        textPath.setText("File path: " + file.getAbsolutePath() + "\n");
     }
 
     private void openBrowser() {
@@ -353,7 +365,22 @@ public class MainTest extends Application {
                     vBox.setLayoutY(30);
 
                     labelMenu = CreateButton("menu");
+                    shortInfo = getManifestInfo();
+                    text.setFill(colorA);
+                    text.setY(60);
+                    text.setX(160);
+                    animation = new Transition() {
+                        {
+                            setCycleDuration(Duration.millis(4000));
+                        }
+
+                        protected void interpolate(double frac) {
+                            int n = Math.round(shortInfo.length() * (float) frac);
+                            text.setText(shortInfo.substring(0, n));
+                        }
+                    };
                     vBox.getChildren().add(labelMenu);
+                    animation.play();
                     break;
             }
         }
@@ -427,6 +454,11 @@ public class MainTest extends Application {
                             "    |======    User Welcome to ENION    =====|" + "\n" +
                             "    |======      Press SPACE to begin      =====|";
             return logo + info;
+        }
+        private String getManifestInfo() {
+            //TODO manifest information
+            String manifestInfo = "JUST FOR TEST";
+            return manifestInfo;
         }
     }
 }
