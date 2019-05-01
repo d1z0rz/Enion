@@ -1,9 +1,0 @@
-Different screens:
-1. Welcome scene
-2. Menu scene
-3. Demo scene
-4. Info scene
-5. Functional scene (Drag zone) for each function
- - Encrypt function with password window
- - Decrypt function with password window
-6. Close scene
