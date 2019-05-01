@@ -122,13 +122,22 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/MainTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="891">
-                  <caret line="484" column="60" selection-start-line="484" selection-start-column="60" selection-end-line="484" selection-end-column="60" />
+                <state relative-caret-position="613">
+                  <caret line="227" column="63" lean-forward="true" selection-start-line="227" selection-start-column="63" selection-end-line="227" selection-end-column="63" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#11538#11539#0" expanded="true" />
                     <element signature="e#11619#11620#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/11.0.2/c082cdf645f9833408dcd960bf68344c9384f569/javafx-base-11.0.2-sources.jar!/javafx/event/EventHandler.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="315">
+                  <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
@@ -201,7 +210,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="2429" />
+    <option name="width" value="2719" />
     <option name="height" value="1359" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -332,12 +341,12 @@
       <workItem from="1555875027017" duration="21589000" />
       <workItem from="1556182179782" duration="851000" />
       <workItem from="1556717745561" duration="22655000" />
-      <workItem from="1556741756127" duration="174000" />
+      <workItem from="1556741756127" duration="415000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118863000" />
+    <option name="totallyTimeSpent" value="119104000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -352,7 +361,7 @@
     <frame x="0" y="23" width="2429" height="1359" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18014243" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18014243" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -379,7 +388,7 @@
       <window_info anchor="right" id="Maven" order="3" />
       <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Gradle" order="6" visible="true" weight="0.080016755" />
+      <window_info active="true" anchor="right" id="Gradle" order="6" visible="true" weight="0.012568077" />
       <window_info anchor="right" id="Database" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
@@ -450,13 +459,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/11.0.2/c082cdf645f9833408dcd960bf68344c9384f569/javafx-base-11.0.2-sources.jar!/javafx/event/EventHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/OpenFileChooserDemo.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/FilterFileChooserDemo.java" />
     <entry file="jar://$USER_HOME$/Downloads/commons-io-2.6/commons-io-2.6.jar!/org/apache/commons/io/FileUtils.class">
@@ -520,10 +522,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/11.0.2/c082cdf645f9833408dcd960bf68344c9384f569/javafx-base-11.0.2-sources.jar!/javafx/event/EventHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="44" column="9" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="891">
-          <caret line="484" column="60" selection-start-line="484" selection-start-column="60" selection-end-line="484" selection-end-column="60" />
+        <state relative-caret-position="613">
+          <caret line="227" column="63" lean-forward="true" selection-start-line="227" selection-start-column="63" selection-end-line="227" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#11538#11539#0" expanded="true" />

@@ -10,7 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -48,51 +49,61 @@ public class MainTest extends Application {
     }
 
     private void handle(KeyEvent event, String sceneName) {
-        if (sceneName.equals("begin")) {
-            if (event.getCode() == KeyCode.SPACE) {
-                primaryStage.setScene(sceneMenu);
+        switch (sceneName) {
+            case "begin":
+                if (event.getCode() == KeyCode.SPACE) {
+                    primaryStage.setScene(sceneMenu);
+                }
+                break;
+            case "menu": {
+                KeyCode key = event.getCode();
+                if (key == KeyCode.DIGIT0) {
+                    primaryStage.setScene(sceneEncrypt);
+                } else if (key == KeyCode.DIGIT1) {
+                    primaryStage.setScene(sceneDecrypt);
+                } else if (key == KeyCode.DIGIT2) {
+                    primaryStage.setScene(sceneManifest);
+                } else if (key == KeyCode.DIGIT3) {
+                    openBrowser();
+                } else if (key == KeyCode.DIGIT4) {
+                    primaryStage.close();
+                }
+                break;
             }
-        } else if (sceneName.equals("menu")) {
-            KeyCode key = event.getCode();
-            if (key == KeyCode.DIGIT0) {
-                primaryStage.setScene(sceneEncrypt);
-            } else if (key == KeyCode.DIGIT1) {
-                primaryStage.setScene(sceneDecrypt);
-            } else if (key == KeyCode.DIGIT2) {
-                primaryStage.setScene(sceneManifest);
-            } else if (key == KeyCode.DIGIT3) {
-                openBrowser();
-            } else if (key == KeyCode.DIGIT4) {
-                primaryStage.close();
+            case "encry": {
+                KeyCode key = event.getCode();
+                if (key == KeyCode.DIGIT0) {
+                    primaryStage.setScene(sceneMenu);
+                } else if (key == KeyCode.DIGIT1) {
+                    contentEncrypt.filePathString.setText("File path");
+                    configurationEncryptFileChooser(fileChooser);
+                    file = fileChooser.showOpenDialog(primaryStage);
+                    printLog(contentEncrypt.filePathString, file);
+                } else if (key == KeyCode.DIGIT2) {
+                    windowAskPassword("encrypt", file);
+                }
+                break;
             }
-        } else if (sceneName.equals("encry")) {
-            KeyCode key = event.getCode();
-            if (key == KeyCode.DIGIT0) {
-                primaryStage.setScene(sceneMenu);
-            } else if (key == KeyCode.DIGIT1) {
-                contentEncrypt.filePathString.setText("File path");
-                configurationEncryptFileChooser(fileChooser);
-                file = fileChooser.showOpenDialog(primaryStage);
-                printLog(contentEncrypt.filePathString, file);
-            } else if (key == KeyCode.DIGIT2) {
-                windowAskPassword("encrypt", file);
+            case "decry": {
+                KeyCode key = event.getCode();
+                if (key == KeyCode.DIGIT0) {
+                    primaryStage.setScene(sceneMenu);
+                } else if (key == KeyCode.DIGIT1) {
+                    contentDecrypt.filePathString.setText("File path");
+                    configutationDecryptFileChooser(fileChooser);
+                    file = fileChooser.showOpenDialog(primaryStage);
+                    printLog(contentDecrypt.filePathString, file);
+                } else if (key == KeyCode.DIGIT2) {
+                    windowAskPassword("decrypt", file);
+                }
+                break;
             }
-        } else if (sceneName.equals("decry")) {
-            KeyCode key = event.getCode();
-            if (key == KeyCode.DIGIT0) {
-                primaryStage.setScene(sceneMenu);
-            } else if (key == KeyCode.DIGIT1) {
-                contentDecrypt.filePathString.setText("File path");
-                configutationDecryptFileChooser(fileChooser);
-                file = fileChooser.showOpenDialog(primaryStage);
-                printLog(contentDecrypt.filePathString, file);
-            } else if (key == KeyCode.DIGIT2) {
-                windowAskPassword("decrypt", file);
-            }
-        } else if (sceneName.equals("manst")) {
-            KeyCode key = event.getCode();
-            if (key == KeyCode.DIGIT0) {
-                primaryStage.setScene(sceneMenu);
+            case "manst": {
+                KeyCode key = event.getCode();
+                if (key == KeyCode.DIGIT0) {
+                    primaryStage.setScene(sceneMenu);
+                }
+                break;
             }
         }
     }
@@ -166,14 +177,10 @@ public class MainTest extends Application {
                 });
                 break;
             case "[2] Encrypt file":
-                menuLabel.setOnMouseClicked(event -> {
-                    windowAskPassword("encrypt", file);
-                });
+                menuLabel.setOnMouseClicked(event -> windowAskPassword("encrypt", file));
                 break;
             case "[2] Decrypt file":
-                menuLabel.setOnMouseClicked(event -> {
-                    windowAskPassword("decrypt", file);
-                });
+                menuLabel.setOnMouseClicked(event -> windowAskPassword("decrypt", file));
                 break;
             default:
                 menuLabel.setOnMouseClicked(event -> System.out.println(menuLabel.getText()));
@@ -214,14 +221,13 @@ public class MainTest extends Application {
         Label labelError = new Label("");
 
         final PasswordField password = new PasswordField();
-        if (action == "encrypt") {
+        if (action.equals("encrypt")) {
             password.setOnAction(e -> {
                 if ((password.getText().getBytes()).length == 16) {
                     labelError.setText("Password is ok");
                     labelError.setTextFill(Color.web("black"));
                     try {
                         Crypto.actionWithFile(choosenFile, "encryption", password.getText());
-                        System.out.println("success");
                         stagePassword.close();
                     } catch (IOException | InvalidKeyException ex) {
                         ex.printStackTrace();
@@ -234,12 +240,11 @@ public class MainTest extends Application {
                     labelError.setTextFill(Color.web("red"));
                 }
             });
-        } else if (action == "decrypt") {
+        } else if (action.equals("decrypt")) {
             password.setOnAction(event -> {
                 if ((password.getText().getBytes()).length == 16) {
                     labelError.setText("Checking password");
                     labelError.setTextFill(Color.web("black"));
-                    System.out.println(password.getText());
                     try {
                         Crypto.actionWithFile(choosenFile, "decryption", password.getText());
                         if (PasswordError.passwordState == 1) {
@@ -280,7 +285,7 @@ public class MainTest extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Enion");
         primaryStage.setWidth(640);
         primaryStage.setHeight(360);

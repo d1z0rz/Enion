@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 public class Crypto {
     //all operation with file ecnryption/decryption
 
-    static void fileProcessor(int cipherMode, String key, File inputFile, File outputFile) {
+    private static void fileProcessor(int cipherMode, String key, File inputFile, File outputFile) {
         //main encrpytion/decrypton process
         try {
             Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
@@ -37,7 +37,6 @@ public class Crypto {
         } catch (NoSuchPaddingException | NoSuchAlgorithmException
                 | InvalidKeyException | BadPaddingException
                 | IllegalBlockSizeException | IOException e) {
-            System.out.println("Exeption Wrong Password");
             PasswordError.passwordState = 1;
         }
     }
@@ -70,8 +69,6 @@ public class Crypto {
             FilePath = inputFile.getAbsolutePath();
             FilePathFormatted = FilePath + ".secured";
             encryptedFile = new File(FilePathFormatted);
-            System.out.println(encryptedFile.getPath());
-            System.out.println(inputFile.getAbsolutePath());
             Crypto.encryption(inputFile, encryptedFile, password);
         } else if (action.equals("decryption")) {
             FilePath = inputFile.getAbsolutePath();
