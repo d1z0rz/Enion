@@ -80,7 +80,7 @@ public class Crypto {
             Crypto.decryption(inputFile, decryptedFile, password);
         }
     }
-
+/**
     public static void main(String[] args) {
         String key = "This is a secret";
         String falseKey = "S0baka";
@@ -92,7 +92,7 @@ public class Crypto {
 
         try {
             //Crypto.actionWithFile(inputFile,"encryption",key);
-            Crypto.actionWithFile(encryptedFile, "decryption", key);
+            //Crypto.actionWithFile(encryptedFile, "decryption", key);
             System.out.println("Sucess");
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -100,5 +100,5 @@ public class Crypto {
             e.printStackTrace();
         }
     }
-
+*/
 }

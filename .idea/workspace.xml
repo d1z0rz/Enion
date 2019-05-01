@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5fde5270-4a1b-491a-bb6e-412980f2cfb6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Crypto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Crypto.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -64,7 +64,7 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.36856982">
+    <splitter split-orientation="horizontal" split-proportion="0.51158845">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
@@ -76,11 +76,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/Crypto.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="510">
-                  <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
+                <state relative-caret-position="1530">
+                  <caret line="102" column="2" selection-start-line="102" selection-start-column="2" selection-end-line="102" selection-end-column="2" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -88,7 +88,7 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/PasswordError.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="45">
@@ -122,11 +122,11 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/MainTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="127">
-                  <caret line="80" column="12" lean-forward="true" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="42" />
+                <state relative-caret-position="-2129">
+                  <caret line="95" column="13" selection-start-line="95" selection-start-column="13" selection-end-line="95" selection-end-column="13" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#11484#11485#0" expanded="true" />
+                    <element signature="e#11619#11620#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -192,9 +192,9 @@
         <option value="$PROJECT_DIR$/document.txt" />
         <option value="$PROJECT_DIR$/src/main/java/CryptoUtilsTest.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/Crypto.java" />
         <option value="$PROJECT_DIR$/src/main/java/PasswordError.java" />
         <option value="$PROJECT_DIR$/src/main/java/MainTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Crypto.java" />
       </list>
     </option>
   </component>
@@ -330,12 +330,12 @@
       <workItem from="1555847392904" duration="16795000" />
       <workItem from="1555875027017" duration="21589000" />
       <workItem from="1556182179782" duration="851000" />
-      <workItem from="1556717745561" duration="22094000" />
+      <workItem from="1556717745561" duration="22336000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118128000" />
+    <option name="totallyTimeSpent" value="118370000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -595,16 +595,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/PasswordError.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -614,11 +604,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="80" column="12" lean-forward="true" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="42" />
+        <state relative-caret-position="-2129">
+          <caret line="95" column="13" selection-start-line="95" selection-start-column="13" selection-end-line="95" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11484#11485#0" expanded="true" />
+            <element signature="e#11619#11620#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Crypto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1530">
+          <caret line="102" column="2" selection-start-line="102" selection-start-column="2" selection-end-line="102" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
