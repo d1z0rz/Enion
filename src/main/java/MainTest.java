@@ -482,7 +482,7 @@ public class MainTest extends Application {
                     "  \\____\\ (_/        \\__/      /_____(     \\____/     (_/        \\__/    " + "\n";
 
             String info =
-                    "    |====== Made by D1z0R and dfjoppe =====|" + "\n" +
+                    "    |====== Made by D1z0R and sjeppiroe =====|" + "\n" +
                             "    |======               Version 1.0               =====|" + "\n" +
                             "    |======   Awesome Encrypting tool   =====|" + "\n" +
                             "    |======    Have fun and Stay Legal    =====|" + "\n" +
