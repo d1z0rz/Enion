@@ -1,3 +1,3 @@
-public class PasswordError {
+public class ParooliViga {
     public static int passwordState = 0;
 }
