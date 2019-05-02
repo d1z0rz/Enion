@@ -428,24 +428,29 @@ public class MainTest extends Application {
                         }
                     };
                     vBox.getChildren().add(labelMenu);
-                    //animation.play();
                     break;
             }
         }
 
         private static Content create(String page) {
             Content content = new Content(page);
-            BorderPane.setAlignment(content.labelTop, Pos.TOP_CENTER);
-            BorderPane.setAlignment(content.vBox,Pos.CENTER_LEFT);
+            //BorderPane.setAlignment(content.labelTop, Pos.TOP_CENTER);
+            BorderPane.setAlignment(content.vBox,Pos.TOP_LEFT);
             BorderPane.setAlignment(content.text,Pos.CENTER);
-            BorderPane.setAlignment(content.labelGround,Pos.BOTTOM_CENTER);
+            //BorderPane.setAlignment(content.labelGround,Pos.BOTTOM_CENTER);
 
-            content.borderPane.setTop(content.labelTop);
-            content.borderPane.setLeft(content.vBox);
+            //content.borderPane.setTop(content.labelTop);
+            content.borderPane.setTop(content.vBox);
             content.borderPane.setCenter(content.text);
-            content.borderPane.setBottom(content.labelGround);
+            //content.borderPane.setBottom(content.labelGround);
             content.borderPane.setPrefSize(640,340);
-            content.borderPane.setStyle("-fx-background-color: #282B5E;");
+            content.borderPane.setStyle("-fx-background-color: #282B5E;" +
+                    "-fx-border-color: #282B5E, #00FFFF;" +
+                    "-fx-border-width: 5, 5;" +
+                    "-fx-border-radius: 0;" +
+                    "-fx-border-insets: 0, 5;" +
+                    "-fx-border-style: solid inside, dotted outside;"
+            );
 
             return content;
         }
