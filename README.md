@@ -1,6 +1,9 @@
 # Enion
 Enion - encryption &amp; decryption program written by two students University of Tartu 
 ## Using
+Programm is writen in english and estonian
+* 'Main' - estonian Main class for program launch
+* 'MainTest' - english Main class for program launch
 You have to import gradle with JavaFX extention
 Programm was tested in [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 ## What you can do with program? 
