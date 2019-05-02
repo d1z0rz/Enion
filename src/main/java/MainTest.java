@@ -240,7 +240,7 @@ public class MainTest extends Application {
                     } catch (IOException | InvalidKeyException ex) {
                         ex.printStackTrace();
                     }
-                } else if (password.getText().length() >= 1 && password.getText().length() < 6) {
+                } else if (password.getText().getBytes().length != 16) {
                     labelError.setText("Password contain 16-bits");
                     labelError.setTextFill(Color.web("red"));
                 } else {
@@ -264,7 +264,7 @@ public class MainTest extends Application {
                     } catch (IOException | InvalidKeyException e) {
                         e.printStackTrace();
                     }
-                } else if (!(password.getText().getBytes().length <= 1 || password.getText().getBytes().length >= 16)) {
+                } else if (password.getText().getBytes().length != 16) {
                     labelError.setText("Password contain 16-bits");
                     labelError.setTextFill(Color.web("red"));
                 } else {

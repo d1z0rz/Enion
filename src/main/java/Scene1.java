@@ -1,12 +1,5 @@
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
+import javafx.animation.*;
 import javafx.animation.PathTransition.OrientationType;
-import javafx.animation.Timeline;
-import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -14,10 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
@@ -76,7 +67,6 @@ public class Scene1 extends Application {
                     65,0,60,-5,55,-5,50,0,45,0,40,-5,
                     18.5,-5,10,-17.66,-10,-17.66,-20,0,-10,17.66);
             s.setStrokeWidth(WIDTH);
-            //s.setStrokeLineCap(StrokeLineCap.ROUND);
             s.setStroke(COLOR);
             s.setEffect(new Bloom());
             return s;
@@ -87,7 +77,6 @@ public class Scene1 extends Application {
                     -20,22.5,-7.5,35,7.5,35,20,22.5,
                     20,5);
             lock.setStrokeWidth(WIDTH);
-            //lock.setStrokeLineCap(StrokeLineCap.ROUND);
             lock.setStroke(COLOR);
             lock.setEffect(new Bloom());
             return  lock;
