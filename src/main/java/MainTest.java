@@ -327,7 +327,6 @@ public class MainTest extends Application {
 
     private static class Content {
         private final BorderPane borderPane = new BorderPane();
-        private Label labelTop, labelGround;
         private VBox vBox = new VBox();
         private Label labelEncrypt, labelDecrypt, labelManifest, labelGitHub, labelQuit;
         private Label labelMenu, labelSelectOne, labelFileEncrypt, labelFileDecrypt;
@@ -346,8 +345,6 @@ public class MainTest extends Application {
         private Content(String pageName) {
             switch (pageName) {
                 case "begin":
-                    labelTop = createSeparator(1);
-                    labelGround = createSeparator(320);
                     vBox.setLayoutY(20);
 
                     shortInfo = getBeginInfo();
@@ -369,8 +366,6 @@ public class MainTest extends Application {
 
                     break;
                 case "menu":
-                    labelTop = createSeparator(1);
-                    labelGround = createSeparator(320);
                     vBox.setLayoutY(50);
 
                     labelEncrypt = CreateButton("enc");
@@ -382,8 +377,6 @@ public class MainTest extends Application {
 
                     break;
                 case "encrypt":
-                    labelTop = createSeparator(1);
-                    labelGround = createSeparator(320);
 
                     vBox.setLayoutY(30);
                     vBox.setMinWidth(350);
@@ -396,8 +389,6 @@ public class MainTest extends Application {
 
                     break;
                 case "decrypt":
-                    labelTop = createSeparator(1);
-                    labelGround = createSeparator(320);
 
                     vBox.setLayoutY(30);
 
@@ -408,8 +399,6 @@ public class MainTest extends Application {
                     vBox.getChildren().addAll(labelMenu, filePathString, labelSelectOne, labelFileDecrypt);
                     break;
                 case "manifest":
-                    labelTop = createSeparator(1);
-                    labelGround = createSeparator(320);
                     vBox.setLayoutY(30);
 
                     labelMenu = CreateButton("menu");
@@ -434,15 +423,11 @@ public class MainTest extends Application {
 
         private static Content create(String page) {
             Content content = new Content(page);
-            //BorderPane.setAlignment(content.labelTop, Pos.TOP_CENTER);
             BorderPane.setAlignment(content.vBox,Pos.TOP_LEFT);
             BorderPane.setAlignment(content.text,Pos.CENTER);
-            //BorderPane.setAlignment(content.labelGround,Pos.BOTTOM_CENTER);
 
-            //content.borderPane.setTop(content.labelTop);
             content.borderPane.setTop(content.vBox);
             content.borderPane.setCenter(content.text);
-            //content.borderPane.setBottom(content.labelGround);
             content.borderPane.setPrefSize(640,340);
             content.borderPane.setStyle("-fx-background-color: #282B5E;" +
                     "-fx-border-color: #282B5E, #00FFFF;" +
@@ -453,14 +438,6 @@ public class MainTest extends Application {
             );
 
             return content;
-        }
-
-        private Label createSeparator(double Y) {
-            Label separator = new Label(
-                    "============================================================================\n");
-            separator.setTextFill(colorA);
-            separator.setLayoutY(Y);
-            return separator;
         }
 
         private Label CreateButton(String buttonName) {
